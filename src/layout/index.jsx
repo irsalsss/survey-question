@@ -20,7 +20,7 @@ const Layout = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={[defaultActive]}
+          selectedKeys={[defaultActive]}
           items={LIST_HEADER}
           onClick={(e) => goTo(e.key)}
         />
