@@ -1,10 +1,10 @@
 import React from 'react';
-import { Typography, Button } from 'antd';
+import { Typography, Button, message } from 'antd';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const { Text } = Typography;
 
-const SharedDragAndDrop = ({ items, onReorder }) => {
+const SharedDragAndDrop = ({ items, onReorder, onDelete }) => {
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -21,7 +21,7 @@ const SharedDragAndDrop = ({ items, onReorder }) => {
   const getItemStyle = (isDragging, draggableStyle) => ({
     userSelect: "none",
     padding: 8 * 2,
-    margin: `0 0 8px 0`,
+    margin: "0 0 8px 0",
     background: isDragging ? "#0764a2" : "#4ab2f7",
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -43,6 +43,13 @@ const SharedDragAndDrop = ({ items, onReorder }) => {
 
     if (onReorder) {
       onReorder(newItems)
+    }
+  }
+
+  const onDeleteItem = (index) => {
+    if (onDelete) {
+      onDelete(index);
+      message.success('Successfully delete')
     }
   }
 
@@ -75,7 +82,7 @@ const SharedDragAndDrop = ({ items, onReorder }) => {
                       </Button>
                       <Button
                         className='ml-8'
-                        onClick={() => {}}
+                        onClick={() => onDeleteItem(index)}
                         type="primary"
                         danger
                       >

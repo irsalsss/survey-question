@@ -8,10 +8,15 @@ import SharedDragAndDrop from '../components/SharedDragAndDrop';
 const { Title } = Typography;
 
 const List = () => {
-  const { questionData, changeQuestionData } = useStoreQuestion(
+  const {
+    questionData,
+    changeQuestionData,
+    deleteQuestionData
+  } = useStoreQuestion(
     (state) => ({
       questionData: state.questionData,
-      changeQuestionData: state.changeQuestionData
+      changeQuestionData: state.changeQuestionData,
+      deleteQuestionData: state.deleteQuestionData,
     }),
     shallow
   );
@@ -26,7 +31,11 @@ const List = () => {
         </div>
       ) : (
         <div className='w-full'>
-          <SharedDragAndDrop items={questionData} onReorder={changeQuestionData} />
+          <SharedDragAndDrop
+            items={questionData}
+            onReorder={changeQuestionData}
+            onDelete={deleteQuestionData}
+          />
         </div>
       ) }
     </div>
