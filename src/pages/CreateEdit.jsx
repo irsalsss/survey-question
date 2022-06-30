@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Typography, Input, message, Button } from 'antd';
 import shallow from 'zustand/shallow';
 import {
@@ -11,13 +11,21 @@ import { deepClone } from '../utils/general';
 import { v4 as uuidv4 } from 'uuid';
 import SharedSelect from '../components/SharedSelect';
 import useStoreQuestion from '../store/question';
+import { useParams } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
-const Create = () => {
-  const { addQuestionData } = useStoreQuestion(
+const CreateEdit = () => {
+  const { id } = useParams();
+  const {
+    questionData,
+    addQuestionData,
+    editQuestionData,
+  } = useStoreQuestion(
     (state) => ({
+      questionData: state.questionData,
       addQuestionData: state.addQuestionData,
+      editQuestionData: state.editQuestionData,
     }),
     shallow
   );
@@ -60,19 +68,38 @@ const Create = () => {
       return;
     }
 
-    const newForm = deepClone(form);
-    newForm.id = uuidv4();
+    // is edit page
+    if (id) {
+      const currIndex = questionData.findIndex((v) => v.id === id);
+      editQuestionData(form, currIndex)
+    } else {
+      const newForm = deepClone(form);
+      newForm.id = uuidv4();
+      addQuestionData(newForm);
+    }
 
-    addQuestionData(newForm);
-
-    message.success("Question from successfully created");
+    const editMessage = id ? 'updated' : 'created';
+    message.success(`Question successfully ${editMessage}`);
     setForm(CREATE_DEFAULT_STATE);
     goTo('/');
   }
 
+  const titlePage = useMemo(() => {
+    return id ? 'Update' : 'Create'
+  }, [id])
+
+  useEffect(() => {
+    if (id) {
+      const currData = questionData.find((v) => v.id === id);
+      setForm(currData)
+    } else {
+      setForm(CREATE_DEFAULT_STATE)
+    }
+  }, [id])
+
   return (
     <div id="container-create" className=''>
-      <Title level={2}>Create a Question Form</Title>
+      <Title level={2}>{titlePage} Question Form</Title>
 
       <div className='mb-5'>
         <Text>Question:</Text>
@@ -86,7 +113,7 @@ const Create = () => {
         <Text>Respondent Options:</Text>
         {options.map((opt, index) => (
           <div className="flex items-start justify-between" key={opt.id}>
-            <div className="flex-[2]">
+            <div className="flex-[2] mb-[16px]">
               <SharedSelect
                 key={opt.id}
                 value={opt.rule}
@@ -124,15 +151,15 @@ const Create = () => {
         )}
 
         <Button
-          className="mt-[40px]"
+          className="my-[40px]"
           onClick={onSubmit}
           type="primary"
         >
-          Save question
+          {titlePage} question
         </Button>
       </div>
     </div>
   )
 }
 
-export default Create
+export default CreateEdit

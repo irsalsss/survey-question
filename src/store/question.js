@@ -6,6 +6,13 @@ const useStoreQuestion = create(persist(
     questionData: [],
     addQuestionData: (newData) => set({ questionData: [...(get().questionData || []), newData] }),
     changeQuestionData: (newData) => set({ questionData: newData }),
+    editQuestionData: (newData, index) => set(() => {
+      const newQuestion = [...(get().questionData || [])];
+      newQuestion[index] = newData;
+      return {
+        questionData: newQuestion
+      }
+    }),
     deleteQuestionData: (index) => set(() => {
       const newQuestion = [...(get().questionData || [])];
       newQuestion.splice(index, 1);

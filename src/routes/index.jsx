@@ -7,7 +7,7 @@ import {
 import loadable from '@loadable/component';
 
 const List = loadable(() => import('../pages/List'));
-const Create = loadable(() => import('../pages/Create'));
+const CreateEdit = loadable(() => import('../pages/CreateEdit'));
 const NotFound = loadable(() => import('../pages/NotFound'));
 
 const Layout = loadable(() => import('../layout'));
@@ -18,7 +18,8 @@ const Routes = () => {
       <ReactRoutes>
         <Route path="/" element={<Layout />}>
           <Route index element={<List />} />
-          <Route path="create" element={<Create />} />
+          <Route path="create" element={<CreateEdit />} />
+          <Route path="edit/:id" element={<CreateEdit />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

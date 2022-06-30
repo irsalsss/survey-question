@@ -4,10 +4,12 @@ import { Typography, Empty } from 'antd';
 import useStoreQuestion from '../store/question';
 import { isEmpty } from '../utils/general';
 import SharedDragAndDrop from '../components/SharedDragAndDrop';
+import useRoute from '../hook/useRoute';
 
 const { Title } = Typography;
 
 const List = () => {
+  const { goTo } = useRoute();
   const {
     questionData,
     changeQuestionData,
@@ -20,6 +22,10 @@ const List = () => {
     }),
     shallow
   );
+
+  const toEditPage = (id) => {
+    goTo(`/edit/${id}`)
+  }
 
   return (
     <div id="container-list flex flex-1">
@@ -35,6 +41,7 @@ const List = () => {
             items={questionData}
             onReorder={changeQuestionData}
             onDelete={deleteQuestionData}
+            onEdit={toEditPage}
           />
         </div>
       ) }

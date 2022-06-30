@@ -4,7 +4,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const { Text } = Typography;
 
-const SharedDragAndDrop = ({ items, onReorder, onDelete }) => {
+const SharedDragAndDrop = ({ items, onReorder, onDelete, onEdit }) => {
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -53,6 +53,12 @@ const SharedDragAndDrop = ({ items, onReorder, onDelete }) => {
     }
   }
 
+  const onEditItem = (id) => {
+    if (onEdit) {
+      onEdit(id)
+    }
+  }
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
@@ -75,7 +81,7 @@ const SharedDragAndDrop = ({ items, onReorder, onDelete }) => {
                     <div className='flex'>
                       <Button
                         className='ml-8'
-                        onClick={() => {}}
+                        onClick={() => onEditItem(item.id)}
                         type="primary"
                       >
                         Edit

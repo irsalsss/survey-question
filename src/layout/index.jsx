@@ -25,7 +25,7 @@ const Layout = () => {
           onClick={(e) => goTo(e.key)}
         />
       </Header>
-      <Content className="mt-[64px] py-[36px] px-[64px]">
+      <Content className="mt-[64px] py-[36px] px-[64px] bg-white">
         <Outlet />
       </Content>
     </LayoutAntd>
