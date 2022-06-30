@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Typography, Input, message, Button } from 'antd';
+import shallow from 'zustand/shallow';
 import {
   CREATE_DEFAULT_STATE,
   MAX_ADD_RESPONDENT_OPTIONS,
@@ -9,10 +10,18 @@ import useRoute from '../hook/useRoute';
 import { deepClone } from '../utils/general';
 import { v4 as uuidv4 } from 'uuid';
 import SharedSelect from '../components/SharedSelect';
+import useStoreQuestion from '../store/question';
 
 const { Title, Text } = Typography;
 
 const Create = () => {
+  const { addQuestionData } = useStoreQuestion(
+    (state) => ({
+      addQuestionData: state.addQuestionData,
+    }),
+    shallow
+  );
+
   const { goTo } = useRoute();
   const [form, setForm] = useState(CREATE_DEFAULT_STATE);
   const { question, options } = form;
@@ -47,18 +56,16 @@ const Create = () => {
 
   const onSubmit = () => {
     if (!question) {
-      message.error("Question field must be filled", 100);
+      message.error("Question field must be filled");
       return;
     }
 
     const newForm = deepClone(form);
-    const prevSurveyData = JSON.parse(localStorage.getItem('surveyData')) || [];
-
     newForm.id = uuidv4();
-    prevSurveyData.push(newForm);
-    localStorage.setItem('surveyData', JSON.stringify(prevSurveyData));
-    message.success("Question from successfully created");
 
+    addQuestionData(newForm);
+
+    message.success("Question from successfully created");
     setForm(CREATE_DEFAULT_STATE);
     goTo('/');
   }
