@@ -16,7 +16,7 @@ const Routes = () => {
   return (
     <Router>
       <ReactRoutes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/survey-question/" element={<Layout />}>
           <Route index element={<List />} />
           <Route path="create" element={<CreateEdit />} />
           <Route path="edit/:id" element={<CreateEdit />} />
