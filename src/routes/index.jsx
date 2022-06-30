@@ -22,7 +22,7 @@ const Routes = () => {
           <Route path="edit/:id" element={<CreateEdit />} />
         </Route>
 
-        <Route path="*" element={<NotFound />} />
+        <Route path="/survey-question/*" element={<NotFound />} />
       </ReactRoutes>
     </Router>
   );
