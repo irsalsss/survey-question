@@ -8,3 +8,6 @@
 - yarn dev
 - http://localhost:3000/
 ```
+
+## Preivew
+[Click here to see the demo](https://irsalsss.github.io/survey-question/)
